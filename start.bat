@@ -1,0 +1,12 @@
+@echo off
+echo 正在启动简历模板生成器...
+echo.
+echo 请确保已安装 Node.js 和 npm
+echo.
+echo 如果是第一次运行，请先执行：
+echo npm install
+echo.
+echo 然后执行：
+echo npm start
+echo.
+pause

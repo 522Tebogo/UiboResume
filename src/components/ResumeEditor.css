@@ -1,0 +1,43 @@
+.editor-panel {
+  width: 450px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 1024px) {
+  .editor-panel {
+    width: 100%;
+    height: 50%;
+    min-height: 300px;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .editor-panel {
+    padding: 15px;
+    height: 40%;
+    min-height: 250px;
+  }
+  
+  .editor-title {
+    font-size: 16px;
+  }
+}
