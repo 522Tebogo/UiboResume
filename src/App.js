@@ -163,7 +163,6 @@ const initialResumeData = {
 
 function App() {
   const [resumeData, setResumeData] = useState(initialResumeData);
-  const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
   const [saveError, setSaveError] = useState(null);
 
@@ -190,7 +189,7 @@ function App() {
     console.error('❌ 自动保存失败:', error);
   }, []);
 
-  const { saveImmediately } = useAutoSave(resumeData, {
+  useAutoSave(resumeData, {
     enabled: true,
     onSave: handleSave,
     onError: handleSaveError
@@ -293,13 +292,12 @@ function App() {
 
   return (
     <div className="app">
-      <SaveStatus
-        isSaving={isSaving}
-        lastSaved={lastSaved}
-        hasError={!!saveError}
-        onExport={exportData}
-        onImport={handleImport}
-      />
+        <SaveStatus
+          lastSaved={lastSaved}
+          hasError={!!saveError}
+          onExport={exportData}
+          onImport={handleImport}
+        />
       
       <div className="main-content">
         <ResumeEditor 

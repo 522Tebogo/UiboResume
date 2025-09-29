@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Phone, Mail, Image, Calendar, Target, Github } from 'lucide-react';
+import { User, Image } from 'lucide-react';
 
 const PersonalInfoEditor = ({ data, onChange }) => {
   const handleChange = (field, value) => {
