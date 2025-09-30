@@ -4,7 +4,6 @@ import WorkExperienceEditor from './WorkExperienceEditor';
 import ProjectExperienceEditor from './ProjectExperienceEditor';
 import OrganizationExperienceEditor from './OrganizationExperienceEditor';
 import HonorsEditor from './HonorsEditor';
-import SkillsEditor from './SkillsEditor';
 import EducationExperienceEditor from './EducationExperienceEditor';
 
 const SectionEditor = ({ section, onChange }) => {
