@@ -146,26 +146,46 @@ const ResumePreview = ({ resumeData }) => {
 
   const downloadPDF = async () => {
     const element = resumeRef.current;
+    if (!element) return;
+
+    // 临时展开内容，避免滚动区域导致截取不全
+    const originalOverflow = element.style.overflow;
+    const originalHeight = element.style.height;
+    element.style.overflow = 'visible';
+    element.style.height = 'auto';
+
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
-      allowTaint: true
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
     });
-    
+
+    // 还原样式
+    element.style.overflow = originalOverflow;
+    element.style.height = originalHeight;
+
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 210;
-    const pageHeight = 295;
+    const pdfWidth = 210; // A4 宽度
+    const pdfHeight = 297; // A4 高度
+    const imgWidth = pdfWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    const pageHeight = pdfHeight;
     let heightLeft = imgHeight;
-
     let position = 0;
 
+    // 首页
     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
     heightLeft -= pageHeight;
 
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight;
+    // 追加页面
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight; // 负值，上移以显示后续部分
       pdf.addPage();
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
@@ -214,7 +234,12 @@ const ResumePreview = ({ resumeData }) => {
           </div>
           {resumeData.personalInfo.avatar && (
             <div className="avatar">
-              <img src={resumeData.personalInfo.avatar} alt="头像" />
+              <img
+                src={resumeData.personalInfo.avatar}
+                alt="头像"
+                crossOrigin="anonymous"
+                referrerPolicy="no-referrer"
+              />
             </div>
           )}
         </div>
