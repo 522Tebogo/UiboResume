@@ -116,30 +116,28 @@ const ResumePreview = ({ resumeData }) => {
         );
       
       case 'skills':
-        return (
-          <div>
-            {section.data.technical && section.data.technical.length > 0 && (
-              <div className="skills-group">
-                <div className="skills-label">技能:</div>
-                <ul className="skills-list">
-                  {section.data.technical.map((skill, index) => (
-                    <li key={index}>{skill.name}({skill.level})</li>
-                  ))}
-                </ul>
+        // 用于显示教育经历
+        return section.data && section.data.length > 0 ? section.data.map((edu, index) => (
+          <div key={edu.id || index} className="experience-item">
+            <div className="experience-header">
+              <div className="experience-title">
+                <h3 className="company-name">{edu.school}</h3>
+                <div className="position">{edu.degree}{edu.major ? ` · ${edu.major}` : ''}</div>
               </div>
-            )}
-            {section.data.languages && section.data.languages.length > 0 && (
-              <div className="skills-group">
-                <div className="skills-label">语言:</div>
-                <ul className="skills-list">
-                  {section.data.languages.map((language, index) => (
-                    <li key={index}>{language}</li>
-                  ))}
-                </ul>
+              <div className="experience-meta">
+                <span className="date">{edu.startDate}-{edu.endDate}</span>
+                <span className="location">{edu.location}</span>
               </div>
+            </div>
+            {edu.highlights && edu.highlights.length > 0 && (
+              <ul className="responsibilities">
+                {edu.highlights.map((h, idx) => (
+                  <li key={idx}>{h}</li>
+                ))}
+              </ul>
             )}
           </div>
-        );
+        )) : <div>暂无教育经历</div>;
       
       default:
         return <div>未知板块类型</div>;

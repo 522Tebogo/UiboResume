@@ -5,6 +5,7 @@ import ProjectExperienceEditor from './ProjectExperienceEditor';
 import OrganizationExperienceEditor from './OrganizationExperienceEditor';
 import HonorsEditor from './HonorsEditor';
 import SkillsEditor from './SkillsEditor';
+import EducationExperienceEditor from './EducationExperienceEditor';
 
 const SectionEditor = ({ section, onChange }) => {
   const renderEditor = () => {
@@ -46,7 +47,7 @@ const SectionEditor = ({ section, onChange }) => {
         );
       case 'skills':
         return (
-          <SkillsEditor
+          <EducationExperienceEditor
             data={section.data}
             onChange={onChange}
           />

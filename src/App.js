@@ -147,20 +147,10 @@ const initialResumeData = {
     {
       id: 'skills',
       type: 'skills',
-      title: '其他',
+      title: '教育经历',
       visible: true,
       order: 6,
-      data: {
-        technical: [
-          { name: 'SPSS', level: '精通' },
-          { name: 'SAS', level: '熟练' },
-          { name: 'R', level: '熟练' }
-        ],
-        languages: [
-          'CET-4',
-          'CET-6'
-        ]
-      }
+      data: []
     }
   ]
 };
@@ -283,7 +273,8 @@ function App() {
       case 'honors':
         return [];
       case 'skills':
-        return { technical: [], languages: [] };
+        // skills 模块已替换为教育经历
+        return [];
       default:
         return '';
     }

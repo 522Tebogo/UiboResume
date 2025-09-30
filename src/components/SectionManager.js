@@ -18,7 +18,7 @@ const SectionManager = ({
     { value: 'projectExperience', label: '项目经历' },
     { value: 'organizationExperience', label: '社团经历' },
     { value: 'honors', label: '荣誉奖项' },
-    { value: 'skills', label: '技能语言' }
+    { value: 'skills', label: '教育经历' }
   ];
 
   const handleAddSection = () => {
