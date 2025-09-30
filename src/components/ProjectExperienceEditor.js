@@ -10,7 +10,9 @@ const ProjectExperienceEditor = ({ data, onChange }) => {
       startDate: '',
       endDate: '',
       location: '',
-      responsibilities: ['']
+      background: '',
+      responsibilities: [''],
+      techPoints: ['', '']
     };
     onChange([...data, newProject]);
   };
@@ -41,6 +43,17 @@ const ProjectExperienceEditor = ({ data, onChange }) => {
   const removeResponsibility = (projIndex, respIndex) => {
     const updated = [...data];
     updated[projIndex].responsibilities.splice(respIndex, 1);
+    onChange(updated);
+  };
+
+  const updateTechPoint = (projIndex, pointIndex, value) => {
+    const updated = [...data];
+    const currentPoints = Array.isArray(updated[projIndex].techPoints)
+      ? updated[projIndex].techPoints
+      : ['', ''];
+    const nextPoints = [...currentPoints];
+    nextPoints[pointIndex] = value;
+    updated[projIndex].techPoints = nextPoints.slice(0, 2);
     onChange(updated);
   };
 
@@ -115,6 +128,16 @@ const ProjectExperienceEditor = ({ data, onChange }) => {
           </div>
           
           <div className="form-group">
+            <label>项目背景</label>
+            <textarea
+              value={project.background || ''}
+              onChange={(e) => updateProject(index, 'background', e.target.value)}
+              placeholder="简述项目的目标、场景、问题与约束..."
+              rows={3}
+            />
+          </div>
+
+          <div className="form-group">
             <label>项目职责</label>
             {project.responsibilities.map((responsibility, respIndex) => (
               <div key={respIndex} className="responsibility-item">
@@ -139,6 +162,20 @@ const ProjectExperienceEditor = ({ data, onChange }) => {
               <Plus size={14} />
               添加职责
             </button>
+          </div>
+
+          <div className="form-group">
+            <label>技术栈/功能（两点）</label>
+            {([0, 1]).map((pIdx) => (
+              <div key={pIdx} className="responsibility-item">
+                <input
+                  type="text"
+                  value={(project.techPoints && project.techPoints[pIdx]) || ''}
+                  onChange={(e) => updateTechPoint(index, pIdx, e.target.value)}
+                  placeholder={pIdx === 0 ? '要点 1（如：React、TypeScript）' : '要点 2（如：关键功能/亮点）'}
+                />
+              </div>
+            ))}
           </div>
         </div>
       ))}

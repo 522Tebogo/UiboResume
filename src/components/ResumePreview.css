@@ -131,6 +131,24 @@
   word-break: break-word;
 }
 
+/* 项目经历块状布局 */
+.project-block {
+  margin-top: 8px;
+}
+
+.block-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.project-background {
+  white-space: pre-line;
+  margin: 0 0 8px 0;
+  line-height: 1.7;
+}
+
 /* 个人总结 */
 .summary-text {
   text-align: justify;

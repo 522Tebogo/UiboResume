@@ -48,12 +48,37 @@ const ResumePreview = ({ resumeData }) => {
                 <span className="location">{project.location}</span>
               </div>
             </div>
+
+            {/* 项目背景 */}
+            {project.background && (
+              <div className="project-block">
+                <div className="block-label">项目背景</div>
+                <p className="project-background">{project.background}</p>
+              </div>
+            )}
+
+            {/* 项目职责 */}
             {project.responsibilities && project.responsibilities.length > 0 && (
-              <ul className="responsibilities">
-                {project.responsibilities.map((responsibility, idx) => (
-                  <li key={idx}>{responsibility}</li>
-                ))}
-              </ul>
+              <div className="project-block">
+                <div className="block-label">项目职责</div>
+                <ul className="responsibilities">
+                  {project.responsibilities.map((responsibility, idx) => (
+                    <li key={idx}>{responsibility}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* 技术栈/功能（两点） */}
+            {project.techPoints && project.techPoints.filter(Boolean).length > 0 && (
+              <div className="project-block">
+                <div className="block-label">技术栈/功能</div>
+                <ul className="responsibilities">
+                  {project.techPoints.slice(0, 2).filter(Boolean).map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
         )) : <div>暂无项目经历</div>;
