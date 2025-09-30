@@ -4,6 +4,16 @@
   overflow: hidden;
 }
 
+/* 主题色变量 */
+:root {
+  --theme-primary: #007bff;
+  --theme-secondary: #6c757d;
+  --theme-accent: #28a745;
+  --theme-background: #ffffff;
+  --theme-border: #e9ecef;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+}
+
 .main-content {
   display: flex;
   gap: 20px;

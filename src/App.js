@@ -1,9 +1,13 @@
-import React, { useState, useCallback } from 'react';
-import ResumeEditor from './components/ResumeEditor';
+import React, { useState, useCallback, useEffect } from 'react';
 import ResumePreview from './components/ResumePreview';
 import SaveStatus from './components/SaveStatus';
+import ThemeSelector from './components/ThemeSelector';
+import PersonalInfoEditor from './components/PersonalInfoEditor';
+import SectionManager from './components/SectionManager';
+import SectionEditor from './components/SectionEditor';
 import useAutoSave from './hooks/useAutoSave';
 import useDataRecovery from './hooks/useDataRecovery';
+import { initTheme } from './utils/themes';
 import './App.css';
 
 const initialResumeData = {
@@ -165,6 +169,13 @@ function App() {
   const [resumeData, setResumeData] = useState(initialResumeData);
   const [lastSaved, setLastSaved] = useState(null);
   const [saveError, setSaveError] = useState(null);
+  const [currentTheme, setCurrentTheme] = useState(null);
+
+  // 初始化主题
+  useEffect(() => {
+    const theme = initTheme();
+    setCurrentTheme(theme);
+  }, []);
 
   // 数据恢复
   const handleDataLoaded = useCallback((loadedData) => {
@@ -300,14 +311,36 @@ function App() {
         />
       
       <div className="main-content">
-        <ResumeEditor 
-          resumeData={resumeData} 
-          updateResumeData={updateResumeData}
-          updateSection={updateSection}
-          addSection={addSection}
-          removeSection={removeSection}
-          reorderSections={reorderSections}
-        />
+        <div className="editor-panel">
+          <div className="editor-header">
+            <h2 className="editor-title">简历编辑器</h2>
+            <ThemeSelector onThemeChange={setCurrentTheme} />
+          </div>
+          
+          <PersonalInfoEditor
+            data={resumeData.personalInfo}
+            onChange={(data) => updateResumeData('personalInfo', data)}
+          />
+          
+          <SectionManager
+            sections={resumeData.sections}
+            updateSection={updateSection}
+            addSection={addSection}
+            removeSection={removeSection}
+            reorderSections={reorderSections}
+          />
+          
+          {resumeData.sections
+            .filter(section => section.visible)
+            .sort((a, b) => a.order - b.order)
+            .map(section => (
+              <SectionEditor
+                key={section.id}
+                section={section}
+                onChange={(data) => updateResumeData(section.id, data)}
+              />
+            ))}
+        </div>
         <ResumePreview resumeData={resumeData} />
       </div>
     </div>
