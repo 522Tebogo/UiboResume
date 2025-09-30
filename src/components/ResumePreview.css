@@ -1,5 +1,7 @@
 .resume-preview {
-  flex: 1;
+  /* 固定右侧预览卡片宽度，避免随内容变化而变化 */
+  width: 820px;
+  flex: 0 0 820px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -9,7 +11,6 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-
 }
 
 .preview-controls {
@@ -135,6 +136,7 @@
   text-align: justify;
   line-height: 1.8;
   margin: 0;
+  white-space: pre-line;
   word-wrap: break-word;
   word-break: break-word;
 }
@@ -276,6 +278,8 @@
 /* 响应式设计 */
 @media (max-width: 1024px) {
   .resume-preview {
+    width: 100%;
+    flex: 1 1 auto;
     padding: 20px;
     height: 50%;
     min-height: 300px;
