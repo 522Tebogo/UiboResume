@@ -169,7 +169,7 @@ function App() {
   const [resumeData, setResumeData] = useState(initialResumeData);
   const [lastSaved, setLastSaved] = useState(null);
   const [saveError, setSaveError] = useState(null);
-  const [currentTheme, setCurrentTheme] = useState(null);
+  const [, setCurrentTheme] = useState(null);
 
   // 初始化主题
   useEffect(() => {
