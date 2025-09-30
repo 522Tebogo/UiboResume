@@ -148,21 +148,22 @@ const ResumePreview = ({ resumeData }) => {
     const element = resumeRef.current;
     if (!element) return;
 
-    // 临时展开内容，避免滚动区域导致截取不全
+    // 展开滚动区域，按实际尺寸渲染
     const originalOverflow = element.style.overflow;
     const originalHeight = element.style.height;
     element.style.overflow = 'visible';
     element.style.height = 'auto';
 
     const canvas = await html2canvas(element, {
-      scale: 2,
+      // 使用较高 DPI 获取更清晰的导出效果
+      scale: Math.max(2, window.devicePixelRatio || 1),
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
       scrollX: 0,
-      scrollY: 0
+      scrollY: 0,
+      width: element.scrollWidth,
+      height: element.scrollHeight
     });
 
     // 还原样式
@@ -171,24 +172,26 @@ const ResumePreview = ({ resumeData }) => {
 
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = 210; // A4 宽度
-    const pdfHeight = 297; // A4 高度
-    const imgWidth = pdfWidth;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // 以页面宽度为基准，等比缩放图片，保证版式与预览一致
+    const imgWidth = pageWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    const pageHeight = pdfHeight;
-    let heightLeft = imgHeight;
-    let position = 0;
+
+    let yOffset = 0;
+    let remaining = imgHeight;
 
     // 首页
-    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    pdf.addImage(imgData, 'PNG', 0, yOffset, imgWidth, imgHeight, undefined, 'FAST');
+    remaining -= pageHeight;
 
-    // 追加页面
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight; // 负值，上移以显示后续部分
+    // 分页追加（通过上移 y 值避免横向缩放差异）
+    while (remaining > 0) {
+      yOffset = remaining - imgHeight; // 负值，向上偏移
       pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      pdf.addImage(imgData, 'PNG', 0, yOffset, imgWidth, imgHeight, undefined, 'FAST');
+      remaining -= pageHeight;
     }
 
     pdf.save('resume.pdf');
@@ -239,6 +242,10 @@ const ResumePreview = ({ resumeData }) => {
                 alt="头像"
                 crossOrigin="anonymous"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  // 如果跨域失败仍可正常显示于页面，但导出受限
+                  e.currentTarget.crossOrigin = null;
+                }}
               />
             </div>
           )}
